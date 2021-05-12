@@ -71,6 +71,7 @@ export default class Login extends Vue {
       } else {
         console.log(user.user)
         await this.$store.dispatch('setUser', user.user)
+        await this.$store.dispatch('setUserSettings', settings)
         this.$router.replace({name: "Console"});
       }
 
