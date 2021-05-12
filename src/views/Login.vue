@@ -49,6 +49,8 @@
 <script lang="ts">
 import {Component, Vue} from 'vue-property-decorator';
 import {auth} from "@/firebase";
+import {getUserSettings} from "@/services/dbService";
+import {ROLE} from "@/models/User";
 
 @Component({})
 export default class Login extends Vue {
@@ -61,10 +63,17 @@ export default class Login extends Vue {
 
   public async submit() {
     try {
-      const data = await auth.signInWithEmailAndPassword(this.form.email, this.form.password)
-      console.log(data.user)
-      await this.$store.dispatch('setUser', data.user)
-      this.$router.replace({name: "Console"});
+      const user: any = await auth.signInWithEmailAndPassword(this.form.email, this.form.password)
+
+      const settings = await getUserSettings(user.user.uid)
+      if (!settings || settings?.role !== ROLE.ADMIN) {
+        this.error = "insufficient permisions to access admin console"
+      } else {
+        console.log(user.user)
+        await this.$store.dispatch('setUser', user.user)
+        this.$router.replace({name: "Console"});
+      }
+
     } catch (e) {
       this.error = e.message;
     }

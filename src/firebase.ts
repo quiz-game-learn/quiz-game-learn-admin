@@ -41,6 +41,7 @@ const quizzesCollection = db.collection('quizzes')
 const partsCollection = db.collection('lessonContentParts')
 const coursesCollection = db.collection('courses')
 const lessonsCollection = db.collection('lessons')
+const userSettingsCollection = db.collection('userSettings')
 
 // export utils/refs
 export {
@@ -51,5 +52,6 @@ export {
     coursesCollection,
     lessonsCollection,
     partsCollection,
-    storage
+    storage,
+    userSettingsCollection
 }
